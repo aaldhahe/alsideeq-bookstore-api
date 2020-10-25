@@ -1,5 +1,3 @@
-using System;
-
 namespace alsideeq_bookstore_api.DTOs
 {
     public class Users 
