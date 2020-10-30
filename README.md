@@ -5,6 +5,10 @@
 - Install dotnet core 3.1 SDK from <https://dotnet.microsoft.com/download/dotnet-core/3.1>
 
 - Install MySql Workbench to connect to the AWS DB alsideeq-bookstore-instance.clslxbbfn4dw.us-east-2.rds.amazonaws.com find instructions here: <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ConnectToInstance.html>
+
+  DB info is in app.config file.
+
+
 - Install Postman to exercise api calls <https://www.postman.com/>
   
 ## Run project
