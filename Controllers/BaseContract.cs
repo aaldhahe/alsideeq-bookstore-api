@@ -6,7 +6,7 @@ namespace alsideeq_bookstore_api.Controllers
 {
     internal class BaseContract
     {
-        public MySqlConnection DataSource 
+        internal MySqlConnection DataSource 
         { 
             get
             {
@@ -15,12 +15,20 @@ namespace alsideeq_bookstore_api.Controllers
         
         }
 
-        public Guid ContentGuid
+        internal Guid ContentGuid
         {
             get
             {
                 return Guid.NewGuid();
             }
-        } 
+        }
+        
+        internal MySqlDataReader QueryDataSource(string query, MySqlConnection conn)
+        {
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            var result = cmd.ExecuteReader();
+            return result;
+        }
+
     }
 }
