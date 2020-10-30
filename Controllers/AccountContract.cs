@@ -1,9 +1,9 @@
 using alsideeq_bookstore_api.DTOs;
 using alsideeq_bookstore_api.Exceptions;
 using alsideeq_bookstore_api.Adapters;
-using MySqlConnector;
 using System.Collections;
 using System;
+using MySqlConnector;
 
 namespace alsideeq_bookstore_api.Controllers 
 {
@@ -25,7 +25,7 @@ namespace alsideeq_bookstore_api.Controllers
             Guid addressGuid = ContentGuid;
             Guid customerGuid = ContentGuid;
             ArrayList queries = new ArrayList();
-            
+            customer.Password = GetHashedPassword(customer.Password);
             queries.Add(BuildInsertAddressQuery(addressGuid, customer.Address));
             queries.Add(BuildInsertCustomerQuery(customerGuid, addressGuid, customer));
             
@@ -50,6 +50,7 @@ namespace alsideeq_bookstore_api.Controllers
             }
             customer.CustomerId = customerGuid.ToString();
             customer.Address.AddressId = addressGuid.ToString();
+            customer.Password = null;
             return customer;
         }
 
