@@ -1,0 +1,159 @@
+{
+	"id": "b2a341ef-376c-440e-8382-079065ba6e4b",
+	"name": "alsideeq-bookstore",
+	"description": "",
+	"auth": null,
+	"events": null,
+	"variables": [],
+	"order": [
+		"71eda0fc-5a96-4936-8013-5b925182ab62",
+		"2da8d266-b742-47e8-b534-5911a97b8acc",
+		"ab36cd9a-6f3e-4927-9bd8-b2fdb92195a7",
+		"b4e6a83c-8e52-45e3-9ae3-14af6cc2b1d3"
+	],
+	"folders_order": [],
+	"protocolProfileBehavior": {},
+	"folders": [],
+	"requests": [
+		{
+			"id": "2da8d266-b742-47e8-b534-5911a97b8acc",
+			"name": "Create Customer Account",
+			"url": "{{apphost}}/Account/CreateAccount",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "28146fff-9048-4c98-8d93-afae17151210",
+						"exec": [
+							"postman.clearEnvironmentVariable('username');",
+							"var random = getRandomNmber();",
+							"pm.globals.set('username', `aaldhaher${random}`);",
+							"",
+							"function getRandomNmber() {",
+							"    return Math.floor(Math.random() * (9999 - 1111) + 1111);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "795736b8-2704-41da-8c4e-7355022b6e5b",
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable('customer-id', response.customerId);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"rawModeData": "{\n    \"username\" : \"{{username}}\",\n    \"firstname\": \"ahmed\",\n    \"lastname\": \"Aldhaheri\",\n    \"phone\": \"123-123-1231\",\n    \"email\": \"aaldhahe@umich.edu\",\n    \"password\": \"blahblah\",\n    \"address\": {\n        \"address\": \"234 hello st\",\n        \"address2\": \"apt 13\",\n        \"city\": \"Dearborn\",\n        \"zipCode\": \"48126\",\n        \"country\": \"USA\",\n        \"state\": \"Michigan\"\n    }\n}",
+			"headers": "",
+			"pathVariables": {}
+		},
+		{
+			"id": "71eda0fc-5a96-4936-8013-5b925182ab62",
+			"name": "Get Users",
+			"url": "{{apphost}}/Account/Users",
+			"description": "",
+			"data": null,
+			"dataOptions": null,
+			"dataMode": null,
+			"headerData": [],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "",
+			"pathVariables": {}
+		},
+		{
+			"id": "ab36cd9a-6f3e-4927-9bd8-b2fdb92195a7",
+			"name": "Check if username exist",
+			"url": "{{apphost}}/Account/VerifyExist",
+			"description": "",
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a3b68ce2-f982-49b5-9fbe-c1761e925cd0",
+						"exec": [
+							"postman.clearEnvironmentVariable('username');",
+							"var random = getRandomNmber();",
+							"pm.globals.set('username', `aaldhaher${random}`);",
+							"",
+							"function getRandomNmber() {",
+							"    return Math.floor(Math.random() * (9999 - 1111) + 1111);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "1cebbdd0-28ef-421e-ab9e-4d05303c1e28",
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable('customer-id', response.customerId);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"rawModeData": "{\n    \"username\" : \"aaldhahe\"\n}",
+			"headers": "",
+			"pathVariables": {}
+		},
+		{
+			"id": "b4e6a83c-8e52-45e3-9ae3-14af6cc2b1d3",
+			"name": "Get Customer By Id",
+			"url": "{{apphost}}/Account/Customers/{{customer-id}}",
+			"description": "",
+			"data": null,
+			"dataOptions": null,
+			"dataMode": null,
+			"headerData": [],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
+			"headers": "",
+			"pathVariables": {}
+		}
+	]
+}
