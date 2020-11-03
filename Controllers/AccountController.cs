@@ -142,7 +142,7 @@ namespace alsideeq_bookstore_api.Controllers
 
             try
             {
-                bool exist = _contract.CheckIfUsernameExist(username);
+                bool exist = _contract.CheckIfUsernameExist(username.Username);
                 return Ok(exist);
             }
             catch(ValidationException ex)

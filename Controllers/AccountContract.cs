@@ -87,7 +87,7 @@ namespace alsideeq_bookstore_api.Controllers
             return dto;
         }
 
-        internal CustomerDTO GetCustomerByUsername(string username)
+        internal CustomerDTO GetCustomerByUsername(string username, bool includePassword = false)
         {
             string query = string.Format(
                                         @"SELECT * 
@@ -101,17 +101,17 @@ namespace alsideeq_bookstore_api.Controllers
             {
                 throw new NotFoundException("Cannot find customer with username " + username); 
             }
-            var dto = _adapter.ToCustomerDTO(queryResult);
+            var dto = _adapter.ToCustomerDTO(queryResult, includePassword);
             dataSource.Close();
             return dto;
         }
 
-        internal bool CheckIfUsernameExist(UsernameDTO username)
+        internal bool CheckIfUsernameExist(string username)
         {
             CustomerDTO customer = null;
             try 
             {
-                customer = GetCustomerByUsername(username.Username);
+                customer = GetCustomerByUsername(username);
             }
             catch(NotFoundException ex)
             {
