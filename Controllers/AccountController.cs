@@ -106,7 +106,7 @@ namespace alsideeq_bookstore_api.Controllers
         {
             if (customer == null)
             {
-                return BadRequest("There was a problem with the validation of the request parameters for create account");
+                return BadRequest("There was a problem with the validation of the body for create account");
             }
 
             try
