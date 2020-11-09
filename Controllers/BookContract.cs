@@ -87,6 +87,7 @@ namespace alsideeq_bookstore_api.Controllers
                 QueryDataSource(query, dataSource);
                 dataSource.Close();
             }
+            book.Category = _categoryContract.GetCategoryById(book.Category.CategoryId);
             return book;
         }
 
