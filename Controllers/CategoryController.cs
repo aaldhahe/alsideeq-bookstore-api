@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using alsideeq_bookstore_api.Exceptions;
+using System.Collections.Generic;
 
 namespace alsideeq_bookstore_api.Controllers
 {
@@ -52,10 +53,7 @@ namespace alsideeq_bookstore_api.Controllers
                 {
                     return InternalServerError("Category with title '" + category.Title + "' already exists");
                 } 
-                else 
-                {
-                    return InternalServerError(ex.Message);
-                }
+                return InternalServerError(ex.Message);
             }
         }
 
@@ -119,6 +117,26 @@ namespace alsideeq_bookstore_api.Controllers
                 }
             }
             catch(Exception ex) 
+            {
+                return InternalServerError(ex.Message);
+            }
+        }
+
+         /// <summary>
+        /// APIs for getting book category list
+        /// </summary> 
+        /// <returns> Returns list of available book categories</returns>
+        [HttpGet]
+        [Route("Categories")]
+        [ProducesResponseType(typeof(List<CategoryDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetCategoriesList()
+        {
+            try 
+            {
+                return Ok(_contract.GetCategoryList());
+            }
+            catch(Exception ex)
             {
                 return InternalServerError(ex.Message);
             }

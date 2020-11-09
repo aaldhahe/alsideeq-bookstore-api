@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using alsideeq_bookstore_api.Exceptions;
+using System.Collections.Generic;
 
 namespace alsideeq_bookstore_api.Controllers
 {
@@ -34,11 +35,11 @@ namespace alsideeq_bookstore_api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateBook([FromBody]BookDTO book)
         {   
-            if (book == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest("There was a problem with the validation of the request body for create book");
+                return BadRequest(ModelState);
             }
-
+            
             try 
             {
                 BookDTO createdBook = _contract.CreateBook(book);
@@ -50,9 +51,32 @@ namespace alsideeq_bookstore_api.Controllers
             }
             catch(Exception ex)
             {
+                if (ex.Message.ToLower().Contains("duplicate entry"))
+                {
+                    return InternalServerError("Book with title '" + book.Title + "' already exists");
+                }
                 return InternalServerError(ex.Message);
             }
         }
 
+         /// <summary>
+        /// APIs for getting book category list
+        /// </summary> 
+        /// <returns> Returns list of available book categories</returns>
+        [HttpGet]
+        [Route("Books")]
+        [ProducesResponseType(typeof(List<BookDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetBooksList()
+        {
+            try 
+            {
+                return Ok(new List<BookDTO>());
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex.Message);
+            }
+        }
     }
 }

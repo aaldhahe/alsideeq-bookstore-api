@@ -44,5 +44,11 @@ namespace alsideeq_bookstore_api.Controllers
             return hashedPassword;
         }
 
+        protected void ExecuteNonQuery(string query, MySqlConnection conn, MySqlTransaction trans)
+        {
+            MySqlCommand cmd = new MySqlCommand(query, conn, trans);
+            cmd.ExecuteNonQuery();
+        }
+
     }
 }

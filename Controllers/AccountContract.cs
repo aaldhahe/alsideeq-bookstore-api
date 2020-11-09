@@ -34,13 +34,9 @@ namespace alsideeq_bookstore_api.Controllers
                 dataSource.Open();
                 using (MySqlTransaction trans = dataSource.BeginTransaction())
                 {
-                    MySqlCommand[] cmd = new MySqlCommand[queries.Count];
-                    int index = 0;
                     foreach(string query in queries)
                     {
-                        cmd[index] = new MySqlCommand(query, dataSource, trans);
-                        cmd[index].ExecuteNonQuery();
-                        index++;
+                        ExecuteNonQuery(query, dataSource, trans);
                     }
 
                     trans.Commit();

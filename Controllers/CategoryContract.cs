@@ -2,6 +2,7 @@ using System;
 using alsideeq_bookstore_api.DTOs;
 using alsideeq_bookstore_api.Exceptions;
 using alsideeq_bookstore_api.Adapters;
+using System.Collections.Generic;
 
 namespace alsideeq_bookstore_api.Controllers
 {
@@ -57,6 +58,22 @@ namespace alsideeq_bookstore_api.Controllers
                 @"SELECT * 
                 FROM Book_Category
                 WHERE title = '{0}'", title);
+            string message = "Cannot find book category with title " + title;
+            return QueryCategoryTable(query, message);
+        }
+
+        internal CategoryDTO GetCategoryById(string id)
+        {
+            string query = string.Format(
+                @"SELECT * 
+                FROM Book_Category
+                WHERE category_id = '{0}'", id);
+            string message = "Cannot find book category with id " + id;
+            return QueryCategoryTable(query, message);
+        }
+
+        internal CategoryDTO QueryCategoryTable(string query, string message)
+        {
             CategoryDTO dto;
             using (var dataSource = DataSource)
             {
@@ -64,12 +81,26 @@ namespace alsideeq_bookstore_api.Controllers
                 var queryResult = QueryDataSource(query, dataSource);
                 if (!queryResult.Read())
                 {
-                    throw new NotFoundException("Cannot find book category with title " + title);
+                    throw new NotFoundException(message);
                 }
                 dto = _adapter.ToCategoryDTO(queryResult);
                 dataSource.Close();
             }
             return dto;
+        }
+
+        internal List<CategoryDTO> GetCategoryList()
+        {
+            string query =  "SELECT * FROM Book_Category";
+            List<CategoryDTO> dtos;
+            using (var dataSource = DataSource)
+            {
+                dataSource.Open();
+                var queryResult = QueryDataSource(query, dataSource);
+                dtos = _adapter.ToCategoryDTOList(queryResult);
+                dataSource.Close();
+            }
+            return dtos;
         }
     }
 }

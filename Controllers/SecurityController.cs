@@ -36,7 +36,7 @@ namespace alsideeq_bookstore_api.Controllers
         public IActionResult Login([FromBody]UserDTO user)
         {   
             if (!ModelState.IsValid) {
-                return BadRequest("There was a problem with validation parameters");
+                return BadRequest(ModelState);
             } 
             try 
             {
