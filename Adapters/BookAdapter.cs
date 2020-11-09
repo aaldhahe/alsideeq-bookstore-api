@@ -1,5 +1,6 @@
 using alsideeq_bookstore_api.DTOs;
 using MySqlConnector;
+using System.Collections.Generic;
 
 namespace alsideeq_bookstore_api.Adapters
 {
@@ -29,6 +30,16 @@ namespace alsideeq_bookstore_api.Adapters
             AssignModelValueToDomain<string>(s => author.Firstname = (string)s, data["firstname"]);
             AssignModelValueToDomain<string>(s => author.Lastname = (string)s, data["lastname"]);
             return author;
+        }
+
+        public List<BookDTO> ToBookDTOList(MySqlDataReader data)
+        {
+            List<BookDTO> books = new List<BookDTO>();
+            while(data.Read())
+            {
+                books.Add(ToBookDTO(data));
+            }
+            return books;
         }
     }
 }

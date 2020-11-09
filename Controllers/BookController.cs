@@ -71,7 +71,7 @@ namespace alsideeq_bookstore_api.Controllers
         {
             try 
             {
-                return Ok(new List<BookDTO>());
+                return Ok(_contract.GetBooksList());
             }
             catch(Exception ex)
             {

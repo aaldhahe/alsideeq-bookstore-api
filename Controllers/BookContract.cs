@@ -149,6 +149,23 @@ namespace alsideeq_bookstore_api.Controllers
             }
             return dto;
         }
+
+        internal List<BookDTO> GetBooksList()
+        {
+            string query = @"SELECT * 
+                            FROM Book
+                            JOIN Book_Category USING(category_id)
+                            JOIN Author USING(author_id)";
+            List<BookDTO> dtos;
+            using (var dataSource = DataSource)
+            {
+                dataSource.Open();
+                var queryResult = QueryDataSource(query, dataSource);
+                dtos = _adapter.ToBookDTOList(queryResult);
+                dataSource.Close();
+            }
+            return dtos;
+        }
         
     }
 }
