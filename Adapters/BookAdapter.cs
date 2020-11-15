@@ -8,7 +8,7 @@ namespace alsideeq_bookstore_api.Adapters
     {
         public BookDTO ToBookDTO(MySqlDataReader data)
         {
-             BookCategoryAdapter adapter = new BookCategoryAdapter();
+            BookCategoryAdapter adapter = new BookCategoryAdapter();
             BookDTO book = new BookDTO();
             AuthorDTO author = ToAuthorDTO(data);
             CategoryDTO category = adapter.ToCategoryDTO(data);

@@ -1,6 +1,7 @@
-using System;
+using System.Text;
 using alsideeq_bookstore_api.Adapters;
 using alsideeq_bookstore_api.DTOs;
+using alsideeq_bookstore_api.ViewModels;
 using alsideeq_bookstore_api.Exceptions;
 using System.Collections.Generic;
 using MySqlConnector;
@@ -151,12 +152,18 @@ namespace alsideeq_bookstore_api.Controllers
             return dto;
         }
 
-        internal List<BookDTO> GetBooksList()
+        internal List<BookDTO> GetBooksList(BookFilterViewModel viewModel)
         {
-            string query = @"SELECT * 
+            var whereClauseBuilder = BuildWhereClause(viewModel);
+            if (!string.IsNullOrEmpty(whereClauseBuilder))
+            {
+                whereClauseBuilder = $" WHERE {whereClauseBuilder}";
+            }
+            string query = $@"SELECT * 
                             FROM Book
                             JOIN Book_Category USING(category_id)
-                            JOIN Author USING(author_id)";
+                            JOIN Author USING(author_id)
+                            {whereClauseBuilder}";
             List<BookDTO> dtos;
             using (var dataSource = DataSource)
             {
@@ -168,5 +175,22 @@ namespace alsideeq_bookstore_api.Controllers
             return dtos;
         }
         
+        private string BuildWhereClause(BookFilterViewModel viewModel)
+        {
+            var whereClauseBuilder = new StringBuilder();
+            if (!string.IsNullOrEmpty(viewModel.Category))
+            {
+                whereClauseBuilder.Append($@" Book_Category.category_title = '{viewModel.Category}'");
+            }
+            if (!string.IsNullOrEmpty(viewModel.Author))
+            {
+                if (!string.IsNullOrEmpty(whereClauseBuilder.ToString()))
+                {
+                    whereClauseBuilder.Append(" AND ");
+                }
+                whereClauseBuilder.Append($@"Author.lastname LIKE '%{viewModel.Author}%'");
+            }
+            return whereClauseBuilder.ToString();
+        }
     }
 }

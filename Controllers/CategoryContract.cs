@@ -57,7 +57,7 @@ namespace alsideeq_bookstore_api.Controllers
             string query = string.Format(
                 @"SELECT * 
                 FROM Book_Category
-                WHERE title = '{0}'", title);
+                WHERE category_title = '{0}'", title);
             string message = "Cannot find book category with title " + title;
             return QueryCategoryTable(query, message);
         }

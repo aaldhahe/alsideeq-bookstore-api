@@ -1,5 +1,6 @@
 using System;
 using alsideeq_bookstore_api.DTOs;
+using alsideeq_bookstore_api.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -67,11 +68,11 @@ namespace alsideeq_bookstore_api.Controllers
         [Route("Books")]
         [ProducesResponseType(typeof(List<BookDTO>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult GetBooksList()
+        public IActionResult GetBooksList(BookFilterViewModel viewModel)
         {
             try 
             {
-                return Ok(_contract.GetBooksList());
+                return Ok(_contract.GetBooksList(viewModel));
             }
             catch(Exception ex)
             {

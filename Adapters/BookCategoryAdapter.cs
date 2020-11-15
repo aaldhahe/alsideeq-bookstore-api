@@ -10,8 +10,8 @@ namespace alsideeq_bookstore_api.Adapters
         {   
             CategoryDTO category = new CategoryDTO();
             AssignModelValueToDomain<string>(s => category.CategoryId = (string)s, data["category_id"]);
-            AssignModelValueToDomain<string>(s => category.Title = (string)s, data["title"]);
-            AssignModelValueToDomain<string>(s => category.Description = (string)s, data["description"]);
+            AssignModelValueToDomain<string>(s => category.Title = (string)s, data["category_title"]);
+            AssignModelValueToDomain<string>(s => category.Description = (string)s, data["category_description"]);
             return category;
         }
 
