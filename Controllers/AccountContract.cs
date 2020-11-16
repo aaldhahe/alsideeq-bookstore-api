@@ -88,6 +88,7 @@ namespace alsideeq_bookstore_api.Controllers
             string query = string.Format(
                                         @"SELECT * 
                                         FROM Customer
+                                        INNER JOIN Address USING(address_id)
                                         WHERE username = '{0}'", username);
             var dataSource = DataSource;
             dataSource.Open();
