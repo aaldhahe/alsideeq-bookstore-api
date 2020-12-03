@@ -60,6 +60,66 @@ namespace alsideeq_bookstore_api.Controllers
             return book;
         }
 
+        internal BookDTO UpdateBook(BookDTO book)
+        {
+            string authorId = GetAuthorID(book.Author);
+            book.Category = _categoryContract.GetCategoryById(book.Category.CategoryId);
+            if (authorId == null)
+            {
+                UpdateBookAndCreateAuthor(book);
+                return book;
+            }
+            book.Author.AuthorId = authorId;
+            using (var dataSource = DataSource)
+            {
+                string query = BuildUpdateBookQuery(book);
+                dataSource.Open();
+                QueryDataSource(query, dataSource);
+                dataSource.Close();
+            }
+            return book;
+        }
+
+        private void UpdateBookAndCreateAuthor(BookDTO book)
+        {
+            book.Author.AuthorId = ContentGuid.ToString();
+            List<string> queries = new List<string>();
+            queries.Add(BuildInsertAuthorQuery(book.Author));
+            queries.Add(BuildUpdateBookQuery(book));
+
+            using (var dataSource = DataSource)
+            {
+                dataSource.Open();
+                using (var trans = dataSource.BeginTransaction())
+                {
+                    foreach(string query in queries)
+                    {
+                        ExecuteNonQuery(query, dataSource, trans);
+                    }
+                    trans.Commit();
+                }
+                dataSource.Close();
+            }
+        }
+
+        internal void DeleteBook(string bookId)
+        {
+            string query = string.Format($@"DELETE FROM Book WHERE book_id = '{bookId}'");
+            using (var dataSource = DataSource)
+            {
+                dataSource.Open();
+                QueryDataSource(query, dataSource);
+                dataSource.Close();
+            }
+        }
+
+        private string BuildUpdateBookQuery(BookDTO book)
+        {
+            return string.Format(@"Update Book 
+                                    SET title = '{0}', price = '{1}', description = '{2}', photo_path = '{3}', stock = {4}, category_id = '{5}', author_id = '{6}' WHERE book_id = '{7}'",
+                                    book.Title, book.Price, book.Description, book.PhotoPath, book.Stock, book.Category.CategoryId, book.Author.AuthorId, book.BookId
+            );
+        }
         internal string BuildInsertBookQuery(BookDTO book)
         {
             return string.Format(
@@ -97,7 +157,7 @@ namespace alsideeq_bookstore_api.Controllers
             return string.Format(
                 @"INSERT INTO Book (book_id, title, price, description, photo_path, stock, category_id, author_id)
                     VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', {5}, '{6}', '{7}')",
-                    ContentGuid.ToString(), book.Title.ToString(), book.Price, book.Description, book.PhotoPath, book.Stock, book.Category.CategoryId, book.Author.AuthorId
+                    book.BookId, book.Title.ToString(), book.Price, book.Description, book.PhotoPath, book.Stock, book.Category.CategoryId, book.Author.AuthorId
             );
         }
 

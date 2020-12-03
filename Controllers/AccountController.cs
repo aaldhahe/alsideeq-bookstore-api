@@ -66,7 +66,38 @@ namespace alsideeq_bookstore_api.Controllers
         /// APIs for managing create account
         /// </summary> 
         /// <param name="customerId"></param>
-        /// <returns> Returns all the current user accounts.</returns>
+        /// <returns> Returns all the customer accounts.</returns>
+        [HttpGet]
+        [Route("Customers")]
+        [ProducesResponseType(typeof(CustomerDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetAllCustomers(string customerId)
+        {
+            try
+            {
+                var customer = _contract.GetCustomerById(customerId);
+                if (customer == null) 
+                {
+                    return NotFound();
+                }
+                else {
+                    return Ok(customer);
+                }
+            }
+            catch(Exception ex) 
+            {
+                return InternalServerError(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// APIs for managing create account
+        /// </summary> 
+        /// <param name="customerId"></param>
+        /// <returns> Returns a specific customer account.</returns>
         [HttpGet]
         [Route("Customers/{customerId}")]
         [ProducesResponseType(typeof(CustomerDTO), StatusCodes.Status200OK)]
@@ -86,6 +117,10 @@ namespace alsideeq_bookstore_api.Controllers
                 else {
                     return Ok(customer);
                 }
+            }
+            catch(NotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch(Exception ex) 
             {
@@ -123,6 +158,66 @@ namespace alsideeq_bookstore_api.Controllers
                 return InternalServerError(ex.Message);
             }
         }
+
+         /// APIs for managing create account
+        /// </summary> 
+        /// <returns> Updates a customer account</returns>
+        [HttpPut]
+        [Route("UpdateAccount")]
+        [ProducesResponseType(typeof(CustomerDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult UpdateAccount([FromBody]CustomerDTO customer)
+        {
+            if (customer == null)
+            {
+                return BadRequest("There was a problem with the validation of the body for create account");
+            }
+
+            try
+            {
+                CustomerDTO updatedAccount = _contract.UpdateAccount(customer);
+                return Ok(updatedAccount);
+            }
+            catch(ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex.Message);
+            }
+        }
+
+        /// APIs for managing create account
+        /// </summary> 
+        /// <returns> Deletes a customer account</returns>
+        [HttpDelete]
+        [Route("DeleteAccount/{customerId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult DeleteAccount(string customerId)
+        {
+            if (customerId == null)
+            {
+                return BadRequest("There was a problem with the validation delete account request");
+            }
+
+            try
+            {
+                _contract.DeleteAccount(customerId);
+                return OKNoContent();
+            }
+            catch(ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex.Message);
+            }
+        }        
 
         /// <summary>
         /// APIs for managing create account

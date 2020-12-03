@@ -60,6 +60,71 @@ namespace alsideeq_bookstore_api.Controllers
             }
         }
 
+        /// <summary>
+        /// APIs for updating book
+        /// </summary> 
+        /// <returns> Returns updated book.</returns>
+        [HttpPut]
+        [Route("UpdateBook")]
+        [ProducesResponseType(typeof(BookDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult UpdateBook([FromBody]BookDTO book)
+        {   
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            try 
+            {
+                BookDTO updatedBook = _contract.UpdateBook(book);
+                return Ok(updatedBook);
+            }
+            catch(ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                if (ex.Message.ToLower().Contains("duplicate entry"))
+                {
+                    return InternalServerError("Book with title '" + book.Title + "' already exists");
+                }
+                return InternalServerError(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// APIs for updating book
+        /// </summary> 
+        /// <returns> Returns updated book.</returns>
+        [HttpDelete]
+        [Route("DeleteBook/{bookId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult DeleteBook(string bookId)
+        {   
+            if (string.IsNullOrEmpty(bookId))
+            {
+                return BadRequest("Book Id cannot be null or empty");
+            }
+            
+            try 
+            {
+                _contract.DeleteBook(bookId);
+                return OKNoContent();
+            }
+            catch(ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex.Message);
+            }
+        }
          /// <summary>
         /// APIs for getting book category list
         /// </summary> 
