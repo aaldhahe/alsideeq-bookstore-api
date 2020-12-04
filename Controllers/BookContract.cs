@@ -234,6 +234,27 @@ namespace alsideeq_bookstore_api.Controllers
             }
             return dtos;
         }
+
+        internal BookDTO GetBookById(string bookId)
+        {
+            string query = string.Format($@"SELECT * FROM Book
+                                         JOIN Book_Category USING(category_id)
+                                         JOIN Author USING(author_id)
+                                       WHERE book_id = '{bookId}'");
+            BookDTO dto = null;
+            using (var dataSource = DataSource)
+            {
+                dataSource.Open();
+                var queryResult = QueryDataSource(query, dataSource);
+                if (!queryResult.Read())
+                {
+                    throw new NotFoundException($@"Book with id {bookId} Not Found");
+                }
+                dto = _adapter.ToBookDTO(queryResult);
+                dataSource.Close();
+            }
+            return dto;
+        }
         
         private string BuildWhereClause(BookFilterViewModel viewModel)
         {

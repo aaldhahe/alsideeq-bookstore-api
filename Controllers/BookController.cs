@@ -144,5 +144,35 @@ namespace alsideeq_bookstore_api.Controllers
                 return InternalServerError(ex.Message);
             }
         }
+
+         /// <summary>
+        /// APIs for getting book by id
+        /// </summary> 
+        /// <returns> Returns book associated with provided id</returns>
+        [HttpGet]
+        [Route("Book/{bookId}")]
+        [ProducesResponseType(typeof(BookDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetBookById(string bookId)
+        {
+            if (string.IsNullOrEmpty(bookId))
+            {
+                return BadRequest("There was a problem with request bookId");
+            }
+            try 
+            {
+                return Ok(_contract.GetBookById(bookId));
+            }
+            catch(NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex.Message);
+            }
+        }
     }
 }
