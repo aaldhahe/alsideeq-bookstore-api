@@ -13,6 +13,7 @@
 		"93997703-c36b-442c-90ec-6bd580c9628c",
 		"3694deb3-f4a2-4a81-b592-947cccb0a2af",
 		"2da8d266-b742-47e8-b534-5911a97b8acc",
+		"5316aefc-2373-4c20-b55c-e7b192a3e9af",
 		"a019beb9-73f6-49eb-8f9e-7b7bd0c35ef6",
 		"58e2c39c-aa89-4f2e-a7b6-65ba001a9bc7",
 		"6bc493ab-f8eb-4a0e-8ebf-0038278847a2",
@@ -214,6 +215,57 @@
 			],
 			"folder": null,
 			"rawModeData": "{\n    \"title\" : \"Quranic Studies\",\n    \"description\": \"The Tafsir And Commentary of Quran Books\"\n}",
+			"headers": "",
+			"pathVariables": {}
+		},
+		{
+			"id": "5316aefc-2373-4c20-b55c-e7b192a3e9af",
+			"name": "Create Cart",
+			"url": "{{apphost}}/Cart/CreateCart",
+			"description": null,
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [],
+			"method": "POST",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "fece0d08-82eb-4f61-96b7-9406d53b07ac",
+						"exec": [
+							"postman.clearEnvironmentVariable('username');",
+							"var random = getRandomNmber();",
+							"pm.globals.set('username', `aaldhaher${random}`);",
+							"",
+							"function getRandomNmber() {",
+							"    return Math.floor(Math.random() * (9999 - 1111) + 1111);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "3112df97-3b46-45cd-bb08-146d3a803871",
+						"exec": [
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"rawModeData": "{\n    \"customerId\": \"{{customer-id}}\",\n    \"bookId\": \"{{book-id}}\"\n}",
 			"headers": "",
 			"pathVariables": {}
 		},
