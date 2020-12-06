@@ -17,14 +17,14 @@ namespace alsideeq_bookstore_api.DTOs
         public string CartDate { get; set; }
         [Required(ErrorMessage = "book id is required")]
         public string BookId { get; set; }
-        public int quantity { get; set; }
+        public int Quantity { get; set; }
 
     }
 
     public class CartDTOs
     {
         public CartDTO Cart { get; set; }
-        public BookDTO Book { get; set; }
+        public BookDTO Item { get; set; }
     }
 
 }

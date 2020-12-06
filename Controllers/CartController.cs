@@ -51,6 +51,98 @@ namespace alsideeq_bookstore_api.Controllers
                 return InternalServerError(ex.Message);
             }
         }
+
+        /// <summary>
+        /// API to create a cart
+        /// </summary>
+        /// <returns> Returns updated cart </returns>
+        [HttpPut]
+        [Route("UpdateCart")]
+        [ProducesResponseType(typeof(CartDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult UpdateCart([FromBody]CartDTO cart)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                return Ok(_contract.UpdateCart(cart));
+            }
+            catch(ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// API to customer cart
+        /// </summary>
+        /// <returns> Returns customer cart </returns>
+        [HttpGet]
+        [Route("GetCart/{customerId}")]
+        [ProducesResponseType(typeof(CartDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetCustomerCart(string customerId)
+        {
+            if (string.IsNullOrEmpty(customerId))
+            {
+                return BadRequest("Customer Id cannot be empty");
+            }
+
+            try
+            {
+                return Ok(_contract.GetCustomerCart(customerId));
+            }
+            catch(ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// API to Delete cart
+        /// </summary>
+        /// <returns> Delete customer cart </returns>
+        [HttpDelete]
+        [Route("DeleteCart/{cartId}")]
+        [ProducesResponseType(typeof(CartDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult DeleteCart(string cartId)
+        {
+            if (string.IsNullOrEmpty(cartId))
+            {
+                return BadRequest("cart Id cannot be empty");
+            }
+
+            try
+            {
+                _contract.DeleteCart(cartId);
+                return OKNoContent();
+            }
+            catch(ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return InternalServerError(ex.Message);
+            }
+        }
+
     }
 
 }
