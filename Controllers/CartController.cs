@@ -125,7 +125,7 @@ namespace alsideeq_bookstore_api.Controllers
         {
             if (string.IsNullOrEmpty(cartId))
             {
-                return BadRequest("cart Id cannot be empty");
+                return BadRequest("Cart Id cannot be empty");
             }
 
             try
