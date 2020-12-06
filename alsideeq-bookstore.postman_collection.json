@@ -11,9 +11,11 @@
 		"5ef553d7-d9fc-4ba6-a054-8ac259c4b188",
 		"5d1b2edc-499c-4ea6-abeb-3b6078f4f5eb",
 		"93997703-c36b-442c-90ec-6bd580c9628c",
+		"b1c73da0-32a1-49c2-b228-4e17db603401",
 		"3694deb3-f4a2-4a81-b592-947cccb0a2af",
 		"2da8d266-b742-47e8-b534-5911a97b8acc",
 		"5316aefc-2373-4c20-b55c-e7b192a3e9af",
+		"00865bf7-99e0-4ae1-82c1-8fd2f0cbc896",
 		"a019beb9-73f6-49eb-8f9e-7b7bd0c35ef6",
 		"58e2c39c-aa89-4f2e-a7b6-65ba001a9bc7",
 		"6bc493ab-f8eb-4a0e-8ebf-0038278847a2",
@@ -22,6 +24,7 @@
 		"044617f6-46e1-454a-8c46-021fbf21103d",
 		"bb58aa40-6858-44f2-8ab0-2eccbe56e297",
 		"b4e6a83c-8e52-45e3-9ae3-14af6cc2b1d3",
+		"14d3caa7-c136-49fb-a7f4-8e2fbabaae35",
 		"7be01594-104b-422d-9d4e-fa7711118055",
 		"bd6c6f63-331c-4e7e-99af-c7ad241b1742"
 	],
@@ -29,6 +32,50 @@
 	"protocolProfileBehavior": {},
 	"folders": [],
 	"requests": [
+		{
+			"id": "00865bf7-99e0-4ae1-82c1-8fd2f0cbc896",
+			"name": "Update Cart",
+			"url": "{{apphost}}/Cart/UpdateCart",
+			"description": null,
+			"data": [],
+			"dataOptions": {
+				"raw": {
+					"language": "json"
+				}
+			},
+			"dataMode": "raw",
+			"headerData": [],
+			"method": "PUT",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "591d9d6c-bcd5-4730-881f-7dc5e4fb1333",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "c52ae13d-a83f-47da-adcd-308d578b9a79",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"folder": null,
+			"rawModeData": "{\n    \"customerId\": \"{{customer-id}}\",\n    \"bookId\": \"{{book-id}}\",\n    \"cartId\": \"{{cart-id}}\",\n    \"quantity\": 5\n}",
+			"headers": "",
+			"pathVariables": {}
+		},
 		{
 			"id": "044617f6-46e1-454a-8c46-021fbf21103d",
 			"name": "Check if book category exist",
@@ -78,6 +125,24 @@
 			],
 			"folder": null,
 			"rawModeData": "{\n    \"title\" : \"Aqeedah\"\n}",
+			"headers": "",
+			"pathVariables": {}
+		},
+		{
+			"id": "14d3caa7-c136-49fb-a7f4-8e2fbabaae35",
+			"name": "Get Customer Cart",
+			"url": "{{apphost}}/Cart/GetCart/{{customer-id}}",
+			"description": "",
+			"data": null,
+			"dataOptions": null,
+			"dataMode": null,
+			"headerData": [],
+			"method": "GET",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": [],
+			"folder": null,
 			"headers": "",
 			"pathVariables": {}
 		},
@@ -257,6 +322,8 @@
 					"script": {
 						"id": "3112df97-3b46-45cd-bb08-146d3a803871",
 						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable('cart-id', response.cartId);",
 							"",
 							""
 						],
@@ -673,6 +740,24 @@
 			],
 			"folder": null,
 			"rawModeData": "{\n    \"username\" : \"aaldhahe\"\n}",
+			"headers": "",
+			"pathVariables": {}
+		},
+		{
+			"id": "b1c73da0-32a1-49c2-b228-4e17db603401",
+			"name": "Delete Cart",
+			"url": "{{apphost}}/Cart/DeleteCart/{{cart-id}}",
+			"description": null,
+			"data": null,
+			"dataOptions": null,
+			"dataMode": null,
+			"headerData": [],
+			"method": "DELETE",
+			"pathVariableData": [],
+			"queryParams": [],
+			"auth": null,
+			"events": null,
+			"folder": null,
 			"headers": "",
 			"pathVariables": {}
 		},
